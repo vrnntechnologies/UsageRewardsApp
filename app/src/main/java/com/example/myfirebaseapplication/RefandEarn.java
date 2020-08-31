@@ -32,7 +32,7 @@ public class RefandEarn extends AppCompatActivity {
             public void onClick(View view) {
 
                 //Create Dynomic Link
-//GitHub testing
+//GitHub  is changed
 
                 public void createLink(){
                     // [START ddl_referral_create_link]
