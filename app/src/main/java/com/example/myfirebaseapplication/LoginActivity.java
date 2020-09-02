@@ -87,7 +87,7 @@ public class LoginActivity extends AppCompatActivity
                             }
                             else
                                 {
-                                Intent intToHome = new Intent(LoginActivity.this,HomeActivity.class);
+                                Intent intToHome = new Intent(LoginActivity.this,RefandEarn.class);
                                 startActivity(intToHome);
                             }
                         }
