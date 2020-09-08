@@ -14,7 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Retrieve_Referral_Info"></activity>
+
         <activity android:name=".RefandEarn" />
         <activity android:name=".HomeActivity" />
         <activity android:name=".LoginActivity" />

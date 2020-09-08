@@ -26,6 +26,7 @@ import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
+
 import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
@@ -48,16 +49,15 @@ public class RefandEarn extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 createlink();
+
             }
         });
-
-
     }
-
-
     public void createlink() {
         Log.e("main", "create link ");
-        String link = "https://mygame.example.com/?invitedby=";
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = user.getUid();
+        String link = "https://mygame.example.com/?invitedby="+uid ;
         DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
                 .setLink(Uri.parse(link))
                 .setDynamicLinkDomain("refearn.page.link")
@@ -132,8 +132,10 @@ public class RefandEarn extends AppCompatActivity {
     private void createAnonymousAccountWithReferrerInfo(final String referrerUid) {
         FirebaseAuth.getInstance()
                 .signInAnonymously()
+
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
+
                     public void onSuccess(AuthResult authResult) {
                         // Keep track of the referrer in the RTDB. Database calls
                         // will depend on the structure of your app's RTDB.
@@ -147,49 +149,6 @@ public class RefandEarn extends AppCompatActivity {
                 });
     }
 
-    public void getCredential(String email, String password) {
-        // [START ddl_referral_get_cred]
-        AuthCredential credential = EmailAuthProvider.getCredential(email, password);
-        // [END ddl_referral_get_cred]
-    }
-
-    public void linkCredential(AuthCredential credential) {
-        // [START ddl_referral_link_cred]
-        FirebaseAuth.getInstance().getCurrentUser()
-                .linkWithCredential(credential)
-                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
-                        // Complete any post sign-up tasks here.
-                    }
-                });
-        // [END ddl_referral_link_cred]
-    }
-
-
-    public void rewardUser(AuthCredential credential) {
-        // [START ddl_referral_reward_user]
-        FirebaseAuth.getInstance().getCurrentUser()
-                .linkWithCredential(credential)
-                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
-                        // Complete any post sign-up tasks here.
-
-                        // Trigger the sign-up reward function by creating the
-                        // "last_signin_at" field. (If this is a value you want to track,
-                        // you would also update this field in the success listeners of
-                        // your Firebase Authentication signIn calls.)
-                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                        DatabaseReference userRecord =
-                                FirebaseDatabase.getInstance().getReference()
-                                        .child("users")
-                                        .child(user.getUid());
-                        userRecord.child("last_signin_at").setValue(ServerValue.TIMESTAMP);
-                    }
-                });
-        // [END ddl_referral_reward_user]
-
 
     }
-}
+
